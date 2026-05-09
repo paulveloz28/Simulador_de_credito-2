@@ -39,3 +39,54 @@ function guardarTasa() {
 
     }
 }
+
+function guardarCliente() {
+  //Obtener datos  
+  let cedula = recuperaraTexto("cedula");
+  let nombre = recuperaraTexto("nombre");
+  let apellido = recuperaraTexto("apellido");
+  //Convertir numeros
+  let ingresos = recuperarFloat("ingresos");
+  let egresos = recuperarFloat("egresos");
+  //Crear objeto
+    let cliente = {
+      cedula: cedula,
+      nombre: nombre,
+      apellido: apellido,
+      ingresos: ingresos,
+      egresos: egresos
+    };
+    //Agregar al arreglo
+    clientes.push(cliente);
+    pintarClientes()
+}
+
+function pintarClientes() {
+
+    let tabla = document.getElementById("tablaClientes");
+
+    let contenidoTabla = "";
+
+    for (let i = 0; i < clientes.length; i++) {
+
+        let objCliente = clientes[i];
+
+        contenidoTabla += "<tr>";
+
+        contenidoTabla += "<td>" + objCliente.cedula + "</td>";
+        contenidoTabla += "<td>" + objCliente.nombre + "</td>";
+        contenidoTabla += "<td>" + objCliente.apellido + "</td>";
+        contenidoTabla += "<td>" + objCliente.ingresos + "</td>";
+        contenidoTabla += "<td>" + objCliente.egresos + "</td>";
+
+        contenidoTabla += "<td>";
+        contenidoTabla += "<button>Actualizar</button>";
+        contenidoTabla += "</td>";
+
+        contenidoTabla += "</tr>";
+    }
+
+    tabla.innerHTML = contenidoTabla;
+}
+
+ 
