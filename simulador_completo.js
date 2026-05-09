@@ -41,24 +41,49 @@ function guardarTasa() {
 }
 
 function guardarCliente() {
-  //Obtener datos  
-  let cedula = recuperaraTexto("cedula");
-  let nombre = recuperaraTexto("nombre");
-  let apellido = recuperaraTexto("apellido");
-  //Convertir numeros
-  let ingresos = recuperarFloat("ingresos");
-  let egresos = recuperarFloat("egresos");
-  //Crear objeto
+
+    // Obtener datos  
+    let cmpcedula = recuperaraTexto("cedula");
+    let cmpnombre = recuperaraTexto("nombre");
+    let cmpapellido = recuperaraTexto("apellido");
+
+    // Convertir números
+    let cmpingresos = recuperarFloat("ingresos");
+    let cmpegresos = recuperarFloat("egresos");
+
+    // Crear objeto
     let cliente = {
-      cedula: cedula,
-      nombre: nombre,
-      apellido: apellido,
-      ingresos: ingresos,
-      egresos: egresos
+        cedula: cmpcedula,
+        nombre: cmpnombre,
+        apellido: cmpapellido,
+        ingresos: cmpingresos,
+        egresos: cmpegresos
     };
-    //Agregar al arreglo
-    clientes.push(cliente);
-    pintarClientes()
+
+    console.log(cliente);
+
+    if (clienteSeleccionado == null) {
+
+        // CREAR
+        clientes.push(cliente);
+
+    } else {
+
+        // VALIDAR CÉDULA
+        if (clienteSeleccionado.cedula != cliente.cedula) {
+            alert("NO SE PERMITE MODIFICAR LA CÉDULA");
+            return;
+        }
+
+        // ACTUALIZAR
+        clienteSeleccionado.nombre = cliente.nombre;
+        clienteSeleccionado.apellido = cliente.apellido;
+        clienteSeleccionado.ingresos = cliente.ingresos;
+        clienteSeleccionado.egresos = cliente.egresos;
+    }
+
+    pintarClientes();
+    limpiar();
 }
 
 function pintarClientes() {
@@ -80,7 +105,7 @@ function pintarClientes() {
         contenidoTabla += "<td>" + objCliente.egresos + "</td>";
 
         contenidoTabla += "<td>";
-        contenidoTabla += "<button>Actualizar</button>";
+        contenidoTabla += "<button onclick=\"seleccionarCliente('" + objCliente.cedula + "')\">Actualizar</button>";
         contenidoTabla += "</td>";
 
         contenidoTabla += "</tr>";
@@ -89,4 +114,40 @@ function pintarClientes() {
     tabla.innerHTML = contenidoTabla;
 }
 
- 
+function buscarCliente(cedula) {
+    for (let i = 0; i < clientes.length; i++) {
+        let objCliente = clientes[i];
+        if (objCliente.cedula == cedula) {
+            return objCliente; //retorna el cliente
+        }
+    }
+    return null
+}
+
+function seleccionarCliente(cedula) {
+
+    let cliente = buscarCliente(cedula);
+
+    if (cliente != null) {
+
+        clienteSeleccionado = cliente;
+
+        mostrarTextoEnCaja("cedula", cliente.cedula);
+        mostrarTextoEnCaja("nombre", cliente.nombre);
+        mostrarTextoEnCaja("apellido", cliente.apellido);
+        mostrarTextoEnCaja("ingresos", cliente.ingresos);
+        mostrarTextoEnCaja("egresos", cliente.egresos);
+    }
+}
+
+function limpiar() {
+    mostrarTextoEnCaja("cedula", "")
+    mostrarTextoEnCaja("nombre", "")
+    mostrarTextoEnCaja("apellido", "")
+    mostrarTextoEnCaja("ingresos", "")
+    mostrarTextoEnCaja("egresos", "")
+    
+
+    //Reset selección
+    clienteSeleccionado = null;
+}
