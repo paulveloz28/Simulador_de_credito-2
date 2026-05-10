@@ -1,8 +1,8 @@
 
   let clientes = [
-    {cedula: "123", nombre: "Mario", apellido: "Rojas", ingresos: 800, egresos: 600},
-    {cedula: "456", nombre: "Xavier", apellido: "Velez", ingresos: 1500, egresos: 500},
-    {cedula: "789", nombre: "Dario", apellido: "Mena", ingresos: 1110, egresos: 200},
+    {cedula: "1212201146", nombre: "Mario", apellido: "Rojas", ingresos: 800, egresos: 600},
+    {cedula: "0956127541", nombre: "Xavier", apellido: "Velez", ingresos: 1500, egresos: 500},
+    {cedula: "171720142", nombre: "Dario", apellido: "Mena", ingresos: 1110, egresos: 200},
   ];
   let creditos = [];
 
