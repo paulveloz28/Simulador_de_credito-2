@@ -1,8 +1,8 @@
 
   let clientes = [
-    //{cedula: "1212201146", nombre: "Mario", apellido: "Rojas", ingresos: 800, egresos: 600},
-    //{cedula: "0956127541", nombre: "Xavier", apellido: "Velez", ingresos: 1500, egresos: 500},
-    //{cedula: "171720142", nombre: "Dario", apellido: "Mena", ingresos: 1110, egresos: 200},
+    {cedula: "1212201146", nombre: "Mario Alexander", apellido: "Rojas Calderon", ingresos: 1800, egresos: 600},
+    {cedula: "0956127541", nombre: "Xavier Francisco", apellido: "Velez Zapata", ingresos: 1500, egresos: 500},
+    {cedula: "171720142", nombre: "Dario Alfonso", apellido: "Artega Mena", ingresos: 1110, egresos: 200},
   ];
   let creditos = [];
 
@@ -297,7 +297,7 @@ function mostrarResultado(){
 
     contenido += `<br>Capacidad De Pago: ${calcularCapacidadPago(montoDisponible)}<br>`
     contenido += `<br>Total a pagar: ${totalPagar}<br>`;//calcular total a pagar 3
-    contenido += `<br>Cuota mensual: ${cuotaMensual}<br>`; //calcular cuota Mensual a pagar 2
+    contenido += `<br>Cuota mensual: ${cuotaMensual.toFixed(2)}<br>`; //calcular cuota Mensual a pagar 2
     contenido += `<br>Resultado: ${resultado}<br>`;//Resultado: Aprobado o rechazado 3
 
     resultadoCredito.innerHTML = contenido;
@@ -326,6 +326,8 @@ function asignarCredito(){
     };
 
     creditos.push(credito);
+
+    pintarCreditos(creditos);
 
     console.log(creditos);
 
@@ -367,7 +369,7 @@ function pintarCreditos(creditos){
         contenidoTabla += "<td>" + credito.monto + "</td>";
         contenidoTabla += "<td>" + credito.tasa + "</td>";
         contenidoTabla += "<td>" + credito.plazo + "</td>";
-        contenidoTabla += "<td>" + credito.cuota + "</td>";
+        contenidoTabla += "<td>" + credito.cuota.toFixed(2) + "</td>";
 
         contenidoTabla += "<td>";
         contenidoTabla += "<button onclick='eliminarCredito(" + i + ")'>Eliminar</button>";
@@ -389,6 +391,7 @@ function buscarCreditosCliente(){
 
     // 3. Pintar créditos encontrados
     pintarCreditos(creditosEncontrados);
+    mostrarTextoEnCaja("buscarCedulaListado", "");
 }
 
 function eliminarCredito(index){
