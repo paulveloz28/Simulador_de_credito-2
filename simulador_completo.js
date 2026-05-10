@@ -1,13 +1,14 @@
 
   let clientes = [
-    {cedula: "1212201146", nombre: "Mario", apellido: "Rojas", ingresos: 800, egresos: 600},
-    {cedula: "0956127541", nombre: "Xavier", apellido: "Velez", ingresos: 1500, egresos: 500},
-    {cedula: "171720142", nombre: "Dario", apellido: "Mena", ingresos: 1110, egresos: 200},
+    //{cedula: "1212201146", nombre: "Mario", apellido: "Rojas", ingresos: 800, egresos: 600},
+    //{cedula: "0956127541", nombre: "Xavier", apellido: "Velez", ingresos: 1500, egresos: 500},
+    //{cedula: "171720142", nombre: "Dario", apellido: "Mena", ingresos: 1110, egresos: 200},
   ];
   let creditos = [];
 
   let tasaInteres = 15;
   let clienteSeleccionado = null;
+  let clienteCreditoSeleccionado = null;//c
   let cuotaCalculada = 0;
   let montoCalculado = 0;
   let plazoCalculado = 0;
@@ -193,7 +194,10 @@ function buscarClienteCredito() {
 
     // 3. Verificar si existe
     if (cliente != null) {
-       clienteSeleccionado = cliente;
+
+        // CLIENTE SOLO PARA CRÉDITOS
+        clienteCreditoSeleccionado = cliente;
+
         // Mostrar datos
         let contenido = "";
 
@@ -208,7 +212,6 @@ function buscarClienteCredito() {
 
     } else {
 
-        // Cliente no encontrado
         document.getElementById("datosClienteCredito").innerHTML =
             "<p>Cliente no encontrado</p>";
     }
@@ -264,7 +267,7 @@ function aprobarCredito(capacidadPago,cuotaMensual){
 function mostrarResultado(){
     let resultadoCredito = document.getElementById("resultadoCredito");
     let contenido = "";
-    let montoDisponible = calcularDisponible(clienteSeleccionado.ingresos, clienteSeleccionado.egresos);
+    let montoDisponible = calcularDisponible(clienteCreditoSeleccionado.ingresos,clienteCreditoSeleccionado.egresos);
 
     let capacidadPago = calcularCapacidadPago(montoDisponible);
     //calcular total a pagar 1
@@ -313,9 +316,9 @@ function asignarCredito(){
 
     let credito = {
 
-        cedula: clienteSeleccionado.cedula,
-        nombre: clienteSeleccionado.nombre,
-        apellido: clienteSeleccionado.apellido,
+        cedula: clienteCreditoSeleccionado.cedula,
+        nombre: clienteCreditoSeleccionado.nombre,
+        apellido: clienteCreditoSeleccionado.apellido,
         monto: montoCalculado,
         tasa: tasaInteres,
         plazo: plazoCalculado,
