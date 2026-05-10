@@ -16,13 +16,22 @@
   //Para recuperar o mostrar información usar los métodos de la clase utilitarios, puede agregar métodos adicionales en utilitarios
 
   function ocultarSecciones() {
+
     let seccion1 = document.getElementById("clientes");
-    let listaClases1 = seccion1.classList
+    let listaClases1 = seccion1.classList;
     listaClases1.remove("activa");
 
     let seccion2 = document.getElementById("parametros");
-    let listaClases2 = seccion2.classList
+    let listaClases2 = seccion2.classList;
     listaClases2.remove("activa");
+
+    let seccion3 = document.getElementById("credito");
+    let listaClases3 = seccion3.classList;
+    listaClases3.remove("activa");
+
+    let seccion4 = document.getElementById("listaCreditos");
+    let listaClases4 = seccion4.classList;
+    listaClases4.remove("activa");
 }
 
 function mostrarSeccion(id) {
@@ -110,6 +119,7 @@ function pintarClientes() {
 
         contenidoTabla += "<td>";
         contenidoTabla += "<button onclick=\"seleccionarCliente('" + objCliente.cedula + "')\">Actualizar</button>";
+        contenidoTabla += "<button onclick=\"eliminarCliente('" + objCliente.cedula + "')\">Eliminar</button>";
         contenidoTabla += "</td>";
 
         contenidoTabla += "</tr>";
@@ -154,6 +164,23 @@ function limpiar() {
 
     //Reset selección
     clienteSeleccionado = null;
+}
+
+function eliminarCliente(cedula){
+
+    for(let i = 0; i < clientes.length; i++){
+
+        let cliente = clientes[i];
+
+        if(cliente.cedula == cedula){
+
+            clientes.splice(i, 1);
+
+            break;
+        }
+    }
+
+    pintarClientes();
 }
 
 function buscarClienteCredito() {
@@ -252,11 +279,15 @@ function mostrarResultado(){
     let cuotaMensual = calcularCuotaMensual(totalPagar, plazoCalculado); //calcular cuota Mensual a pagar 1
 
     let aprobado = aprobarCredito(capacidadPago, cuotaMensual);//Resultado: Aprobado o rechazado 1
+    cuotaCalculada = cuotaMensual;
+    creditoAprobado = aprobado;
     //6. aplicar estilos segun el resultado.
     if(aprobado){
         resultadoCredito.className = "aprobado";
+        document.getElementById("btnAsignarCredito").disabled = false;
     }else{
-    resultadoCredito.className = "rechazado";
+        resultadoCredito.className = "rechazado";
+        document.getElementById("btnAsignarCredito").disabled = true;
     }
 
     let resultado = aprobado ? "APROBADO" : "RECHAZADO"; //Resultado: Aprobado o rechazado 2
@@ -276,4 +307,90 @@ function calcularCredito(){
     plazoCalculado = recuperarInt("plazoCredito");
 
     mostrarResultado();
+}
+
+function asignarCredito(){
+
+    let credito = {
+
+        cedula: clienteSeleccionado.cedula,
+        nombre: clienteSeleccionado.nombre,
+        apellido: clienteSeleccionado.apellido,
+        monto: montoCalculado,
+        tasa: tasaInteres,
+        plazo: plazoCalculado,
+        cuota: cuotaCalculada
+    };
+
+    creditos.push(credito);
+
+    console.log(creditos);
+
+    alert("Crédito asignado correctamente");
+}
+
+function buscarCreditos(cedula){
+
+    let creditosEncontrados = [];
+
+    for(let i = 0; i < creditos.length; i++){
+
+        let credito = creditos[i];
+
+        if(credito.cedula == cedula){
+
+            creditosEncontrados.push(credito);
+        }
+    }
+
+    return creditosEncontrados;
+}
+
+function pintarCreditos(creditos){
+
+    let tabla = document.getElementById("tablaCreditos");
+
+    let contenidoTabla = "";
+
+    for(let i = 0; i < creditos.length; i++){
+
+        let credito = creditos[i];
+
+        contenidoTabla += "<tr>";
+
+        contenidoTabla += "<td>" + credito.cedula + "</td>";
+        contenidoTabla += "<td>" + credito.nombre + "</td>";
+        contenidoTabla += "<td>" + credito.apellido + "</td>";
+        contenidoTabla += "<td>" + credito.monto + "</td>";
+        contenidoTabla += "<td>" + credito.tasa + "</td>";
+        contenidoTabla += "<td>" + credito.plazo + "</td>";
+        contenidoTabla += "<td>" + credito.cuota + "</td>";
+
+        contenidoTabla += "<td>";
+        contenidoTabla += "<button onclick='eliminarCredito(" + i + ")'>Eliminar</button>";
+        contenidoTabla += "</td>";
+
+        contenidoTabla += "</tr>";
+    }
+
+    tabla.innerHTML = contenidoTabla;
+}
+
+function buscarCreditosCliente(){
+
+    // 1. Recuperar cédula
+    let cedula = recuperaraTexto("buscarCedulaListado");
+
+    // 2. Buscar créditos
+    let creditosEncontrados = buscarCreditos(cedula);
+
+    // 3. Pintar créditos encontrados
+    pintarCreditos(creditosEncontrados);
+}
+
+function eliminarCredito(index){
+
+    creditos.splice(index, 1);
+
+    pintarCreditos(creditos);
 }
