@@ -16,6 +16,7 @@
   <button onclick="mostrarSeccion('clientes')">Clientes</button>
   <button onclick="mostrarSeccion('credito')">Creditos</button>
   <button onclick="mostrarSeccion('listaCreditos')">Créditos Registrados</button>
+  <button onclick="mostrarSeccion('listarContactos')">Contactos</button>
 </nav>
 
 <section id="parametros">
@@ -29,6 +30,12 @@
   <button onclick="guardarTasa()">Guardar tasa</button>
 
   <p id="mensajeTasa"></p>
+
+  <br><br>
+
+  <label>Monto maximo:</label>
+  <input type="number" id="montoMaximo" placeholder="Ingrese monto maximo">
+  <p id="mensajeMonto"></p>
 </section>
 
 <section id="clientes">
@@ -37,6 +44,8 @@
   <input type="text" id="cedula" placeholder="Cedula">
   <input type="text" id="nombre" placeholder="Nombre">
   <input type="text" id="apellido" placeholder="Apellido">
+  <input type="email" id="correo" placeholder="correo">
+  <input type="text"  id="telefono" placeholder="telefono">
   <input type="number" id="ingresos" placeholder="Ingresos">
   <input type="number" id="egresos" placeholder="Egresos">
 
@@ -51,6 +60,8 @@
         <th>Cédula</th>
         <th>Nombre</th>
         <th>Apellido</th>
+        <th>Correo</th>
+        <th>telefonoh>
         <th>Ingresos</th>
         <th>Egresos</th>
         <th>Acciones</th>
@@ -99,6 +110,10 @@
     Ver todos
   </button>
 
+  <button onclick="filtrarCreditoVIP()">
+    Credito VIP
+  </button>
+
   <table>
 
     <thead>
@@ -119,6 +134,22 @@
 
   </table>
 
+</section>
+
+<section id="listarContactos">
+<h2>Acerca del Desarrollador</h2>
+ <div class="perfil-contenedor">
+  <div class="perfil-foto-bloque">
+  <img id="fotoDesarrollador" src="desarrollo.jpg" alt="Foto de Jonathan Veloz" class=" perfil-foto">
+ </div>
+
+ <div class="perfil-info">
+  <h3>Jonathan Veloz</h3>
+  <p><strong>Alias Profecional: </strong>Paul28</p>
+  <p><strong>Carrera:</strong>Desarrollo de software</p>
+  <p><strong>ubicacion:</strong>Quito, Ecuador</p>
+
+  
 </section>
 
 <script src="simulador_completo.js"></script>

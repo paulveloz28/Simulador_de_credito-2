@@ -1,12 +1,13 @@
 
   let clientes = [
-    {cedula: "1212201146", nombre: "Mario Alexander", apellido: "Rojas Calderon", ingresos: 1800, egresos: 600},
-    {cedula: "0956127541", nombre: "Xavier Francisco", apellido: "Velez Zapata", ingresos: 1500, egresos: 500},
-    {cedula: "171720142", nombre: "Dario Alfonso", apellido: "Artega Mena", ingresos: 1110, egresos: 200},
+    {cedula: "1212201146", nombre: "Mario Alexander", apellido: "Rojas Calderon",correo: "mario78@gmail.com",telefono:"0983421209", ingresos: 1800, egresos: 600},
+    {cedula: "0956127541", nombre: "Xavier Francisco", apellido: "Velez Zapata", correo: "mario789@gmail.com",telefono:"09898512009", ingresos: 1500, egresos: 500},
+    {cedula: "171720142", nombre: "Dario Alfonso", apellido: "Artega Mena", correo: "maria876@gmail.com",telefono:"0984303909", ingresos: 1110, egresos: 200},
   ];
   let creditos = [];
 
   let tasaInteres = 15;
+  let montoMaximo = 5000;
   let clienteSeleccionado = null;
   let clienteCreditoSeleccionado = null;//c
   let cuotaCalculada = 0;
@@ -33,6 +34,10 @@
     let seccion4 = document.getElementById("listaCreditos");
     let listaClases4 = seccion4.classList;
     listaClases4.remove("activa");
+
+    let seccion5 = document.getElementById("listarContactos");
+    let listaClases5 = seccion5.classList;
+    listaClases5.remove("activa");
 }
 
 function mostrarSeccion(id) {
@@ -48,6 +53,13 @@ function guardarTasa() {
     if (cmpTasa >= 10 && cmpTasa <= 20) {
         mostrarTexto("mensajeTasa", "Tasa configurada correctamente: " + cmpTasa + " %")
         tasaInteres = cmpTasa;
+
+        let nuevoMontoMaximo = recuperarFloat("montoMaximo");
+        if(!isNaN(nuevoMontoMaximo)&& nuevoMontoMaximo>0){
+            montoMaximo = nuevoMontoMaximo;
+            mostrarTexto("mensajeMonto", "Monto maximo configurado: $" +montoMaximo);
+        }
+
     } else {
         mostrarTexto("mensajeTasa", "Tasa debe estar entre 10% y 20%")
 
@@ -60,16 +72,25 @@ function guardarCliente() {
     let cmpcedula = recuperaraTexto("cedula");
     let cmpnombre = recuperaraTexto("nombre");
     let cmpapellido = recuperaraTexto("apellido");
+    let cmpcorreo = recuperaraTexto("correo");
+    let cmptelefono = recuperaraTexto("telefono")
 
     // Convertir números
     let cmpingresos = recuperarFloat("ingresos");
     let cmpegresos = recuperarFloat("egresos");
+
+    if(cmpcorreo =="" || !cmpcorreo.includes("@")){
+        alert("Correo invalido");
+        return;
+    }
 
     // Crear objeto
     let cliente = {
         cedula: cmpcedula,
         nombre: cmpnombre,
         apellido: cmpapellido,
+        correo: cmpcorreo,
+        telefono: cmptelefono,
         ingresos: cmpingresos,
         egresos: cmpegresos
     };
@@ -92,6 +113,8 @@ function guardarCliente() {
         // ACTUALIZAR
         clienteSeleccionado.nombre = cliente.nombre;
         clienteSeleccionado.apellido = cliente.apellido;
+        clienteSeleccionado.correo = cliente.correo;
+        clienteSeleccionado.telefono = cliente.telefono;
         clienteSeleccionado.ingresos = cliente.ingresos;
         clienteSeleccionado.egresos = cliente.egresos;
     }
@@ -115,6 +138,8 @@ function pintarClientes() {
         contenidoTabla += "<td>" + objCliente.cedula + "</td>";
         contenidoTabla += "<td>" + objCliente.nombre + "</td>";
         contenidoTabla += "<td>" + objCliente.apellido + "</td>";
+        contenidoTabla += "<td>" + objCliente.correo + "</td>";
+        contenidoTabla += "<td>" + objCliente.telefono + "</td>";
         contenidoTabla += "<td>" + objCliente.ingresos + "</td>";
         contenidoTabla += "<td>" + objCliente.egresos + "</td>";
 
@@ -150,6 +175,8 @@ function seleccionarCliente(cedula) {
         mostrarTextoEnCaja("cedula", cliente.cedula);
         mostrarTextoEnCaja("nombre", cliente.nombre);
         mostrarTextoEnCaja("apellido", cliente.apellido);
+        mostrarTextoEnCaja("correo", cliente.correo);
+        mostrarTextoEnCaja("telefono", cliente.telefono);
         mostrarTextoEnCaja("ingresos", cliente.ingresos);
         mostrarTextoEnCaja("egresos", cliente.egresos);
     }
@@ -159,6 +186,8 @@ function limpiar() {
     mostrarTextoEnCaja("cedula", "")
     mostrarTextoEnCaja("nombre", "")
     mostrarTextoEnCaja("apellido", "")
+    mostrarTextoEnCaja("correo", "")
+    mostrarTextoEnCaja("telefono", "")
     mostrarTextoEnCaja("ingresos", "")
     mostrarTextoEnCaja("egresos", "")
     
@@ -399,4 +428,26 @@ function eliminarCredito(index){
     creditos.splice(index, 1);
 
     pintarCreditos(creditos);
+}
+
+function calcularCredito(){
+    montoCalculado = recuperarFloat("montoCredito");
+    plazoCalculado = recuperarInt("plazoCredito");
+    if(montoCalculado>montoMaximo){
+        alert("El monto supera el maximo permitido: $" + montoMaximo);
+        mostrarTextoEnCaja("montoCredito", "");
+        return;
+    }
+    mostrarResultado();
+}
+
+function filtrarCreditoVIP(){
+    let creditosVIP =[];
+    for(let i=0;i<creditos.length; i++){
+        let credito = creditos[i];
+        if(credito.monto>5000){
+            creditosVIP.push(credito);
+        }
+    }
+    pintarCreditos(creditosVIP);
 }
